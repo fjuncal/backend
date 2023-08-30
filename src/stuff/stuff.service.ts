@@ -1,27 +1,48 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
-import { CreateStuffDto } from './dto/create-stuff.dto';
-import { UpdateStuffDto } from './dto/update-stuff.dto';
+import { Prisma } from '@prisma/client';
+import { PrismaService } from 'src/shared/prisma_service/prisma.service';
 
 @Injectable()
 export class StuffService {
-  create(createStuffDto: CreateStuffDto) {
-    return 'This action adds a new stuff';
+  constructor(private readonly prisma: PrismaService) {}
+
+  create(createStuffDto: Prisma.StuffCreateInput) {
+    return this.prisma.stuff.create({
+      data: createStuffDto,
+    });
   }
 
   findAll() {
-    return `This action returns all stuff`;
+    return this.prisma.stuff.findMany({
+      include: {
+        category: true,
+      },
+    });
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} stuff`;
+    return this.prisma.stuff.findUnique({
+      where: {
+        id: id,
+      },
+    });
   }
 
-  update(id: number, updateStuffDto: UpdateStuffDto) {
-    return `This action updates a #${id} stuff`;
+  update(id: number, updateStuffDto: Prisma.StuffUpdateInput) {
+    return this.prisma.stuff.update({
+      data: updateStuffDto,
+      where: {
+        id: id,
+      },
+    });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} stuff`;
+    return this.prisma.stuff.delete({
+      where: {
+        id: id,
+      },
+    });
   }
 }
