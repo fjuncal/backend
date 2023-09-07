@@ -7,8 +7,10 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
 
 @Controller('categories')
 export class CategoriesController {
@@ -19,6 +21,7 @@ export class CategoriesController {
     return this.categoriesService.create(createCategoryDto);
   }
 
+  @UseGuards(AuthGuard)
   @Get()
   findAll() {
     return this.categoriesService.findAll();
