@@ -12,6 +12,7 @@ import {
 import { CategoriesService } from './categories.service';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('categories')
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
@@ -21,7 +22,6 @@ export class CategoriesController {
     return this.categoriesService.create(createCategoryDto);
   }
 
-  @UseGuards(AuthGuard)
   @Get()
   findAll() {
     return this.categoriesService.findAll();
